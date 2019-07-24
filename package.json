@@ -1,0 +1,29 @@
+{
+  "name": "reuters-scraper",
+  "version": "1.0.0",
+  "description": "A basic news scraper for Reuters articles",
+  "main": "server.js",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "cheerio": "^1.0.0-rc.3",
+    "express": "^4.17.1",
+    "express-handlebars": "^3.1.0",
+    "mongojs": "^2.6.0",
+    "mongoose": "^5.6.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/i-k0n/Reuters-Scraper.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/i-k0n/Reuters-Scraper/issues"
+  },
+  "homepage": "https://github.com/i-k0n/Reuters-Scraper#readme"
+}
