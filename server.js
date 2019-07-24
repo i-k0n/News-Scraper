@@ -4,7 +4,7 @@ var exphbs  = require('express-handlebars');
 var mongojs = require("mongojs");
 var axios = require("axios");
 var cheerio = require("cheerio");
-
+var image;
 // Initialize Express
 var app = express();
 
@@ -78,22 +78,28 @@ app.get("/scrape", function(req, res) {
       axios.get("https://www.reuters.com/news/us").then(function(response) {
         res.send("scraping intiated");
         var $ = cheerio.load(response.data);
-        $("h2.FeedItemHeadline_headline > a").each(function(i, headline) {
-          var title = $(headline).text()
-          var link = $(headline).attr("href")
+        
+        $("div.ImageStoryTemplate_image-story-container").each(function(i, singleArticle) {
+          var title = $(singleArticle).find(".FeedItemHeadline_headline > a").text();
+          var link =  $(singleArticle).find(".FeedItemHeadline_headline > a").attr("href");
+          var image = $(singleArticle).children("span").find("img").attr("src");
+          var summary = $(singleArticle).find(".FeedItemLede_lede").text();
           if (title && link) {
             db.articles.insert({
               title, 
-              link
+              link,
+              image,
+              summary
             }), function (err) {
               console.log(err)
             }
+            console.log(title, link, image, summary)
           } else {
             console.log("inserted instead")
           }
         })
-      })
   });
+});
 
 // Set the app to listen on port 3000
 app.listen(8080, function() {
