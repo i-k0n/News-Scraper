@@ -11,14 +11,24 @@
           <p>{{summary}}</p>
           {{#unless saved}}
             <!-- Instead of using handlebars, call a route to change the value of saved -->
-            {{> save-button saved=false}}
+            <button data-id={{_id}} data-task="save">Save Article</button>
           {{/unless}}
           {{#if saved}}
-            {{> save-button saved=true}}
+            <button data-id={{_id}} data-task="unsave">Unsave Article</button>
           {{/if}}
         <!-- Results from DB here -->
         </div>
         {{/each}}
       </tbody>
     </table>
+
+    <script>
+      $("button").click(function() {
+        id = $(this).attr("data-id");
+        task = $(this).attr("data-task");
+        $.post("/article/" + task + "/" + id, function() {
+          window.location.href="/articles";
+        })
+      })
+    </script>
     

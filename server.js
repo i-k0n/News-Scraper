@@ -66,17 +66,17 @@ app.get("/articles", function (req, res) {
 });
 
 // save article
-app.post("/article/save/:id", function (req, res) {
-  db.Article.create(req.body)
+app.post("/article/:save/:id", function (req, res) {
+  var save = req.params.save === "save" ? "true" : "false" 
+  console.log(save)
+  db.Article.findByIdAndUpdate(
+    { _id: req.params.id }, { saved: save }, { new: true })
     .then(function(dbArticle) {
-      return db.Article.findOneAndUpdate({
-        _id: req.params.id
-      }, {
-        saved: true
-      }, {
-        new: true
-      })
+      res.json(dbArticle);
     })
+    .catch(function(err) {
+      res.json(err);
+    });
 })
 
 // list of saved articles
