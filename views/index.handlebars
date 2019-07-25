@@ -1,19 +1,24 @@
-<h3 class="header">Reuters Headlines for the U.S.</h3>
-    {{!-- <div id="buttons">
-      <button class="btn" id="weight-sort">Sort By Weight</button>
-      <button class="btn" id="name-sort">Sort By Name</button>
-    </div> --}}
+<h3 class="header">NPR Headlines for the U.S.</h3>
+    
     <table id="results">
       <thead>
-        <tr>
-          <th>Title</th>
-          <th>Link</th>
-          <th>Image</th>
-          <th>Summary</th>
-        </tr>
       </thead>
       <tbody>
+        {{#each articles}}
+        <div data-id={{_id}}>
+          <a href={{link}}>{{title}}</a><br />
+          <img src={{image}} /><br />
+          <p>{{summary}}</p>
+          {{#unless saved}}
+            <!-- Instead of using handlebars, call a route to change the value of saved -->
+            {{> save-button saved=false}}
+          {{/unless}}
+          {{#if saved}}
+            {{> save-button saved=true}}
+          {{/if}}
         <!-- Results from DB here -->
+        </div>
+        {{/each}}
       </tbody>
     </table>
-    <script src="./app.js"></script>
+    

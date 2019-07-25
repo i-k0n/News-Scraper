@@ -1,5 +1,3 @@
-console.log("app.js")
-
 function displayResults(articles) {
     // First, empty the table
     $("tbody").empty();
@@ -19,8 +17,7 @@ function displayResults(articles) {
   }
 
 
-$.getJSON("/all", function(articles) {
-  console.log("get request")
+$.getJSON("/articles", function(articles) {
     // Call our function to generate a table body
     displayResults(articles);
   });
