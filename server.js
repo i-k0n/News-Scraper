@@ -11,6 +11,11 @@ var mongoose = require("mongoose");
 // Initialize Express
 var app = express();
 var db = require("./models/index");
+
+// If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/news";
+
+mongoose.connect(MONGODB_URI);
 // Use morgan logger for logging requests
 app.use(logger("dev"));
 
@@ -23,8 +28,7 @@ app.use(express.json());
 // Set up a static folder (public) for our web app
 app.use(express.static("public"));
 
-// Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/news", { useNewUrlParser: true });
+
 
 // Routes
 app.get("/scrape", function(req, res) {
