@@ -1,21 +1,18 @@
 <h1 class="header">Saved articles</h1>
-    
-    <table id="results">
-      <thead>
-      </thead>
-      <tbody>
+<a href="/articles">Back to all Articles</a>
+    <div class="cards">
         {{#each articles}}
             {{#if saved}}
-                <div data-id={{_id}}>
-                    <a href={{link}}>{{title}}</a><br />
-                    <img src={{image}} /><br />
-                    <p>{{summary}}</p>
+                <div class="card" data-id={{_id}}>
+                  <a class="title" href={{link}}>{{title}}</a>
+                  <img src={{image}} />
+                  <p class="summary">{{summary}}</p>
                     
                         <button class="save-article" data-id={{_id}} data-task="unsave">Unsave Article</button>
                         
-                            <button class="edit-note" note-id={{_id}} data-task="edit">Edit Note</button>
-                            <button class="delete-note" note-id={{_id}} data-task="delete">Delete Note</button>
-                            <button class="add-note" note-id={{_id}} data-task="add">Add Note</button>
+                        <button class="edit-note" note-id={{_id}} data-task="edit">Edit Note</button>
+                        <button class="delete-note" note-id={{_id}} data-task="delete">Delete Note</button>
+                        <button class="add-note" note-id={{_id}} data-task="add">Add Note</button>
                   <!-- Results from DB here -->
                          
                           
@@ -23,9 +20,8 @@
                 </div>
             {{/if}}
         {{/each}}
-        <div class="note-area" data-id={{this._id}}></div>
-      </tbody>
-    </table>
+        </div>
+      <div class="note-area" data-id={{this._id}}></div>
 
     <script>
       $(".save-article").click(function() {
