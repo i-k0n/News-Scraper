@@ -31,6 +31,11 @@ app.use(express.static("public"));
 
 
 // Routes
+
+app.get("/", function (req, res) {
+    res.redirect("/articles");
+});
+
 app.get("/scrape", function(req, res) {
     // First, we grab the body of the html with axios
     axios.get("https://www.npr.org/sections/national/").then(function(response) {
