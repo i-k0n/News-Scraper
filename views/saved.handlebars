@@ -1,0 +1,121 @@
+<h3 class="header">Saved articles</h3>
+    
+    <table id="results">
+      <thead>
+      </thead>
+      <tbody>
+        {{#each articles}}
+            {{#if saved}}
+                <div data-id={{_id}}>
+                    <a href={{link}}>{{title}}</a><br />
+                    <img src={{image}} /><br />
+                    <p>{{summary}}</p>
+                    
+                        <button class="save-article" data-id={{_id}} data-task="unsave">Unsave Article</button>
+                        
+                        {{#if note-id}}
+                          <button class="edit-note" data-id={{_id}} data-task="edit">Edit Note</button>
+                          <button class="delete-note" data-id={{_id}} data-task="delete">Delete Note</button>
+                        {{else}}
+                          <button class="add-note" data-id={{_id}} data-task="add">Add Note</button>
+                        {{/if}}
+                <!-- Results from DB here -->
+                        <div class="note-area" data-id={{_id}}>
+                        </div>
+                </div>
+            {{/if}}
+        {{/each}}
+      </tbody>
+    </table>
+
+    <script>
+      $(".save-article").click(function() {
+        id = $(this).attr("data-id");
+        task = $(this).attr("data-task");
+        $.post("/article/" + task + "/" + id, function() {
+          window.location.href="/articles";
+        })
+      })
+
+// grab notes
+$(document).on("click", ".add-note", function() {
+  // Empty the notes from the note section
+  $(".note-area").empty();
+  // Save the id from the p tag
+  var id = $(this).attr("data-id");
+
+  // Now make an ajax call for the Article
+  $.get("/article/" + id, function(data) {
+    // With that done, add the note information to the page
+    
+      console.log(id);
+      // The title of the article
+      $(".note-area").append("<h2>" + data.title + "</h2>");
+      // An input to enter a new title
+      $(".note-area").append("<input id='titleinput' name='title' >");
+      // A textarea to add a new note body
+      $(".note-area").append("<textarea id='bodyinput' name='body'></textarea>");
+      // A button to submit a new note, with the id of the article saved to it
+      $(".note-area").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
+
+      // If there's a note in the article
+      if (data.note) {
+        // Place the title of the note in the title input
+        $("#titleinput").val(data.note.title);
+        // Place the body of the note in the body textarea
+        $("#bodyinput").val(data.note.body);
+      }
+    })
+  });
+
+
+// save note
+$(document).on("click", "#savenote", function() {
+  // Grab the id associated with the article from the submit button
+  var thisId = $(this).attr("data-id");
+
+  // Run a POST request to change the note, using what's entered in the inputs
+  var id = $(this).parent().attr("data-id");
+  console.log("id for save: ", id)
+  var obj = {
+    title: $("#titleinput").val(),
+    body: $("#bodyinput").val()
+  };
+  console.log(obj)
+  $.post("/article/" + id, obj)
+    // With that done
+    .then(function(data) {
+      // Log the response
+      console.log(data);
+      // Empty the notes section
+      $("#notes").empty();
+    });
+
+  // Also, remove the values entered in the input and textarea for note entry
+  $("#titleinput").val("");
+  $("#bodyinput").val("");
+});
+
+
+      $(".save-note").click(function() {
+        // article id
+        id = $(this).attr("data-id");
+        // add
+        task = $(this).attr("data-task");
+        $.post("/article/note/" + id, function() {
+          window.location.href="/articles";
+        })
+      })
+      $(".submit").click(function() {
+        // article id
+        var id = $(this).attr("data-id");
+        var obj = {
+          title: $(".note-title").val(),
+          body: $(".note-body").val()
+        };
+        console.log(obj)
+        $.post("/article/note/" + id, obj, function() {
+          window.location.href="/article/saved";
+        })
+      })
+    </script>

@@ -27,10 +27,14 @@ var schema = new Schema({
     type: Boolean,
     default: false
   },
+	note: {
+		type: Schema.Types.ObjectId,
+		ref: "Note"
+	},
   userCreated: {
     type: Date,
     default: Date.now
-  },
+  }, 
   lastUpdated: Date
 });
 

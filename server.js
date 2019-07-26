@@ -65,6 +65,43 @@ app.get("/articles", function (req, res) {
     });
 });
 
+// single article
+app.get("/article/:id", function (req, res) {
+  db.Article.find({}, function(err, docs) {
+    // handlebars requires information to be passed as an object
+    var obj = {
+      articles: docs
+    }
+      res.render("saved", obj);
+    });
+});
+
+app.post("/article/:id", function(req, res) {
+  // TODO
+  // ====
+  // save the new note that gets posted to the Notes collection
+  // then find an article from the req.params.id
+  // and update it's "note" property with the _id of the new note
+  
+  // res.json(req.body) use first to check what the front end is sending back
+  db.Note.create(req.body)
+    .then(function(dbNote) {
+      // res.json(dbNote);
+      return db.Article.findOneAndUpdate({
+        _id: req.params.id 
+      }, { 
+        note: dbNote._id 
+      }, { 
+        new: true 
+      })
+    }).then(function(dbArticle) {
+      res.json(dbArticle)
+    }).catch(function(err) {
+      res.json(err);
+    })
+});
+
+
 // save article
 app.post("/article/:save/:id", function (req, res) {
   var save = req.params.save === "save" ? "true" : "false" 
@@ -81,18 +118,38 @@ app.post("/article/:save/:id", function (req, res) {
 
 // list of saved articles
 app.get("/article/saved", function (req, res) {
-
+  db.Article.find({}, function(err, docs) {
+    // handlebars requires information to be passed as an object
+    var obj = {
+      articles: docs
+    }
+      res.render("saved", obj);
+    });
 })
 
 // save note to article
-app.post("/article/note/save", function (req, res) {
-  
+app.post("/article/note/:id", function (req, res) {
+  db.Note.create(req.body)
+    .then(function(dbNote) {
+      // res.json(dbNote);
+      return db.Article.findOneAndUpdate({
+        _id: req.params.id 
+      }, { 
+        note: dbNote._id 
+      }, { 
+        new: true 
+      })
+    }).then(function(dbArticle) {
+      res.json(dbArticle)
+    }).catch(function(err) {
+      res.json(err);
+    })
 })
 
-// edit note
-app.put("/article/note/:id", function (req, res) {
+// // edit note
+// app.put("/article/note/:id", function (req, res) {
 
-})
+// })
 
 // delete a note
 app.delete("/article/note/:id", function (req, res) {
