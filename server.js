@@ -13,10 +13,10 @@ var app = express();
 var db = require("./models/index");
 
 // If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
-var PORT = 3000;
+var PORT = process.env.PORT || 3000;
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/news";
 
-mongoose.connect(MONGODB_URI);
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 // Use morgan logger for logging requests
 app.use(logger("dev"));
 
