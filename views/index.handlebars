@@ -1,14 +1,11 @@
-<h3 class="header">NPR Headlines for the U.S.</h3>
-    
-    <table id="results">
-      <thead>
-      </thead>
-      <tbody>
+<h1 class="header">NPR Headlines for the U.S.</h1>
+    <a href="/scrape" class="scrape">Scrape</a>
+    <div class="cards">
         {{#each articles}}
-        <div data-id={{_id}}>
-          <a href={{link}}>{{title}}</a><br />
-          <img src={{image}} /><br />
-          <p>{{summary}}</p>
+        <div class="card" data-id={{_id}}>
+          <a class="title" href={{link}}>{{title}}</a>
+          <img src={{image}} />
+          <p class="summary">{{summary}}</p>
           {{#unless saved}}
             <!-- Instead of using handlebars, call a route to change the value of saved -->
             <button class="save-article" data-id={{_id}} data-task="save">Save Article</button>
@@ -19,8 +16,7 @@
         <!-- Results from DB here -->
         </div>
         {{/each}}
-      </tbody>
-    </table>
+      </div> <!-- .cards -->
 
     <script>
       $(".save-article").click(function() {
@@ -30,5 +26,6 @@
           window.location.href="/article/saved";
         })
       })
+
     </script>
     

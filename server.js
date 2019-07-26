@@ -26,7 +26,7 @@ app.set('view engine', 'handlebars');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // Set up a static folder (public) for our web app
-app.use(express.static("public"));
+app.use(express.static("public/"));
 
 
 
@@ -50,17 +50,20 @@ app.get("/scrape", function(req, res) {
         result.image = $(element).find("img").attr("src");
         result.summary = $(element).find(".teaser").text();
         console.log("result", result.image)
-        db.Article.create(result).then(function(dbArticle) {
-            // View the added result in the console
-            console.log(dbArticle);
-          })
-          .catch(function(err) {
-          // If an error occurred, log it
-            console.log(err);
-          })    
+        if (result.title && result.image) {
+          db.Article.create(result).then(function(dbArticle) {
+              // View the added result in the console
+              console.log(dbArticle);
+            })
+            .catch(function(err) {
+            // If an error occurred, log it
+              console.log(err);
+            })   
+        } 
       });
-      res.send("Scrape Completed");
+      console.log("Scrape Completed")
     });
+    res.redirect("/articles");
   });
 
 // home

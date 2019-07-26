@@ -1,4 +1,4 @@
-<h3 class="header">Saved articles</h3>
+<h1 class="header">Saved articles</h1>
     
     <table id="results">
       <thead>
@@ -13,18 +13,17 @@
                     
                         <button class="save-article" data-id={{_id}} data-task="unsave">Unsave Article</button>
                         
-                        {{#if note-id}}
-                          <button class="edit-note" data-id={{_id}} data-task="edit">Edit Note</button>
-                          <button class="delete-note" data-id={{_id}} data-task="delete">Delete Note</button>
-                        {{else}}
-                          <button class="add-note" data-id={{_id}} data-task="add">Add Note</button>
-                        {{/if}}
-                <!-- Results from DB here -->
-                        <div class="note-area" data-id={{_id}}>
-                        </div>
+                            <button class="edit-note" note-id={{_id}} data-task="edit">Edit Note</button>
+                            <button class="delete-note" note-id={{_id}} data-task="delete">Delete Note</button>
+                            <button class="add-note" note-id={{_id}} data-task="add">Add Note</button>
+                  <!-- Results from DB here -->
+                         
+                          
+                        
                 </div>
             {{/if}}
         {{/each}}
+        <div class="note-area" data-id={{this._id}}></div>
       </tbody>
     </table>
 
@@ -47,19 +46,20 @@ $(document).on("click", ".add-note", function() {
   // Now make an ajax call for the Article
   $.get("/article/" + id, function(data) {
     // With that done, add the note information to the page
-    
+
       console.log(id);
+      console.log(data);
       // The title of the article
-      $(".note-area").append("<h2>" + data.title + "</h2>");
+      $(".note-area").append("<h2>" + {{title}} + "</h2>");
       // An input to enter a new title
       $(".note-area").append("<input id='titleinput' name='title' >");
       // A textarea to add a new note body
       $(".note-area").append("<textarea id='bodyinput' name='body'></textarea>");
       // A button to submit a new note, with the id of the article saved to it
-      $(".note-area").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
+      $(".note-area").append("<button data-id='" + {{_id}} + "' id='savenote'>Save Note</button>");
 
       // If there's a note in the article
-      if (data.note) {
+      if (data.id) {
         // Place the title of the note in the title input
         $("#titleinput").val(data.note.title);
         // Place the body of the note in the body textarea
