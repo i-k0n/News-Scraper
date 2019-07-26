@@ -13,6 +13,7 @@ var app = express();
 var db = require("./models/index");
 
 // If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
+var PORT = 3000;
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/news";
 
 mongoose.connect(MONGODB_URI);
@@ -170,6 +171,6 @@ app.delete("/article/note/:id", function (req, res) {
 
 
 // Set the app to listen on port 3000
-app.listen(3000, function() {
+app.listen(PORT, function() {
   console.log("App running on port 3000!");
 });
